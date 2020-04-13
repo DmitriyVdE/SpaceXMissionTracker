@@ -1,0 +1,52 @@
+2020-04-13T13:16:58.371Z - info: Server started on port 5000
+2020-04-13T13:17:18.372Z - info: REQUEST: GET / ::1 HTTP/1.1 - 404 139 2.465
+2020-04-13T13:17:18.576Z - info: REQUEST: GET /favicon.ico ::1 HTTP/1.1 - 404 150 0.894
+2020-04-13T13:37:31.510Z - info: REQUEST: GET /signin ::1 HTTP/1.1 - 404 145 0.229
+2020-04-13T13:38:01.298Z - info: REQUEST: GET /user/ ::1 HTTP/1.1 - 404 144 0.217
+2020-04-13T13:38:11.670Z - info: REQUEST: GET /users/version ::1 HTTP/1.1 - 404 152 0.218
+2020-04-13T13:38:15.120Z - info: REQUEST: GET /version ::1 HTTP/1.1 - 404 146 0.314
+2020-04-13T13:38:24.214Z - info: REQUEST: GET /users/version ::1 HTTP/1.1 - 404 152 0.218
+2020-04-13T13:38:30.197Z - info: REQUEST: GET /user/version ::1 HTTP/1.1 - 404 151 0.259
+2020-04-13T13:48:35.653Z - info: REQUEST: GET /version ::1 HTTP/1.1 - 404 146 0.337
+2020-04-13T13:49:58.348Z - info: REQUEST: GET /api ::1 HTTP/1.1 - 404 142 0.432
+2020-04-13T13:50:04.251Z - info: REQUEST: GET /user/version ::1 HTTP/1.1 - 404 151 0.289
+2020-04-13T14:00:08.984Z - info: REQUEST: GET /user/version ::1 HTTP/1.1 - 404 151 0.478
+2020-04-13T14:01:25.961Z - info: REQUEST: GET /api/user/version ::1 HTTP/1.1 - - - -
+2020-04-13T14:08:47.752Z - info: REQUEST: GET /api/user/version ::1 HTTP/1.1 - - - -
+2020-04-13T14:10:53.707Z - info: REQUEST: GET /api/user/version ::1 HTTP/1.1 - - - -
+2020-04-13T14:11:24.761Z - info: Server started on port 5000
+2020-04-13T14:12:07.835Z - info: REQUEST: GET /api/user/version ::1 HTTP/1.1 - - - -
+2020-04-13T14:12:26.668Z - info: REQUEST: GET /api/user/version ::1 HTTP/1.1 - - - -
+2020-04-13T14:12:48.137Z - info: Server started on port 5000
+2020-04-13T14:12:58.106Z - info: REQUEST: GET /api/user/version ::1 HTTP/1.1 - - - -
+2020-04-13T14:25:26.676Z - info: Server started on port 5000
+2020-04-13T14:25:57.166Z - info: Server started on port 5000
+2020-04-13T14:26:06.681Z - info: REQUEST: GET /api/user/version ::1 HTTP/1.1 - - - -
+2020-04-13T14:28:56.547Z - info: Server started on port 5000
+2020-04-13T14:29:04.399Z - info: REQUEST: GET /api/user/version ::1 HTTP/1.1 - 200 15 3.105
+2020-04-13T14:29:22.687Z - info: Server started on port 5000
+2020-04-13T14:29:24.646Z - info: REQUEST: GET /api/user/version ::1 HTTP/1.1 - 500 29 3.064
+2020-04-13T14:35:40.432Z - info: REQUEST: POST /api/user ::1 HTTP/1.1 application/json 500 29 916.789
+2020-04-13T14:36:39.894Z - info: Server started on port 5000
+2020-04-13T14:36:42.554Z - info: REQUEST: POST /api/user ::1 HTTP/1.1 application/json 201 116 202.666
+2020-04-13T14:37:43.516Z - info: REQUEST: POST /api/user/signin ::1 HTTP/1.1 application/json 500 87 3.757
+2020-04-13T14:38:37.169Z - info: REQUEST: POST /api/user/signin ::1 HTTP/1.1 application/json 200 342 33.688
+2020-04-13T14:41:10.662Z - info: REQUEST: POST /api/user ::1 HTTP/1.1 application/json 400 1045 3.298
+2020-04-13T14:41:22.003Z - info: Server started on port 5000
+2020-04-13T14:41:36.429Z - info: REQUEST: POST /api/user ::1 HTTP/1.1 application/json 400 1045 12.728
+2020-04-13T14:41:46.303Z - info: REQUEST: POST /api/user ::1 HTTP/1.1 application/json 201 148 234.134
+2020-04-13T14:45:43.884Z - info: REQUEST: GET /api-docs ::1 HTTP/1.1 - 301 175 1.570
+2020-04-13T14:45:43.900Z - info: REQUEST: GET /api-docs/ ::1 HTTP/1.1 - 200 3104 1.567
+2020-04-13T14:45:43.948Z - info: REQUEST: GET /api-docs/swagger-ui-init.js ::1 HTTP/1.1 - 200 4879 0.298
+2020-04-13T14:45:43.951Z - info: REQUEST: GET /api-docs/swagger-ui.css ::1 HTTP/1.1 - 200 141841 6.239
+2020-04-13T14:45:43.957Z - info: REQUEST: GET /api-docs/swagger-ui-standalone-preset.js ::1 HTTP/1.1 - 200 307021 4.731
+2020-04-13T14:45:43.961Z - info: REQUEST: GET /api-docs/swagger-ui-bundle.js ::1 HTTP/1.1 - 200 974176 5.459
+2020-04-13T14:45:44.450Z - info: REQUEST: GET /api-docs/favicon-32x32.png ::1 HTTP/1.1 - 200 628 1.191
+2020-04-13T14:46:15.876Z - info: REQUEST: POST /api/user ::1 HTTP/1.1 application/json 500 97 2.700
+2020-04-13T14:46:29.818Z - info: REQUEST: POST /api/user ::1 HTTP/1.1 application/json 500 97 1.404
+2020-04-13T14:52:54.064Z - info: Server started on port 5000
+2020-04-13T14:53:00.570Z - info: REQUEST: POST /api/user/signin ::1 HTTP/1.1 application/json 404 43 242.449
+2020-04-13T14:54:01.269Z - info: Server started on port 5000
+2020-04-13T14:54:09.345Z - info: REQUEST: POST /api/user ::1 HTTP/1.1 application/json 500 97 20.836
+2020-04-13T14:54:14.856Z - info: REQUEST: POST /api/user ::1 HTTP/1.1 application/json 201 148 224.616
+2020-04-13T14:54:18.297Z - info: REQUEST: POST /api/user/signin ::1 HTTP/1.1 application/json 200 374 42.760

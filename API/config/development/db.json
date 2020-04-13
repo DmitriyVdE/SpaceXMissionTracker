@@ -1,0 +1,5 @@
+{
+    "cnd": {
+        "connection": "mongodb+srv://dbAPI:tQUkwdKHNOwKQy4Y@main-kzg1x.gcp.mongodb.net/SXMTDEV?retryWrites=true&w=majority"
+    }
+}
