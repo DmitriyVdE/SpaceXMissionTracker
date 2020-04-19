@@ -1,0 +1,36 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe C:\Users\Dmitriy\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js init
+
+PATH: 
+  C:\Perl64\site\bin;C:\Perl64\bin;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\ProgramData\DockerDesktop\version-bin;C:\Program Files\Docker\Docker\Resources\bin;C:\Program Files\Java\jdk-13\bin;C:\Program Files\dotnet;C:\Program Files\dotnet\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\;C:\Program Files (x86)\Microsoft SQL Server\150\DTS\Binn\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\130\Tools\Binn\;C:\Program Files (x86)\Microsoft SQL Server\140\Tools\Binn\;C:\Program Files\Microsoft SQL Server\140\Tools\Binn\;C:\Program Files\Microsoft SQL Server\140\DTS\Binn\;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\ProgramData\chocolatey\bin;C:\Windows\System32;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\nodejs\;C:\Program Files\Git\cmd;C:\Program Files (x86)\Google\Cloud SDK\google-cloud-sdk\bin;C:\Users\Dmitriy\AppData\Local\Programs\Python\Python38-32\Scripts\;C:\Users\Dmitriy\AppData\Local\Programs\Python\Python38-32\;C:\MAMP\bin\php\php7.3.7;C:\Windows\System32\WindowsPowerShell\v1.0;C:\Program Files\PowerShell\7\;C:\Users\Dmitriy\AppData\Local\Programs\Python\Python38-32\Scripts\;C:\Users\Dmitriy\AppData\Local\Programs\Python\Python38-32\;C:\Users\Dmitriy\AppData\Local\Microsoft\WindowsApps;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\;C:\Program Files\Java\jdk-13\bin;C:\Program Files\dotnet;C:\Users\Dmitriy\.dotnet\tools;C:\Windows\System32;C:\Program Files\Java\jdk-13.0.1;C:\Users\Dmitriy\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\Dmitriy\AppData\Roaming\npm;C:\Program Files (x86)\FAHClient;C:\MAMP\bin\php\php7.3.7;C:\Windows\System32\WindowsPowerShell\v1.0;C:\texlive\2019\bin\win32
+
+Yarn version: 
+  1.22.4
+
+Node version: 
+  13.8.0
+
+Platform: 
+  win32 x64
+
+Trace: 
+  Error: canceled
+      at Interface.<anonymous> (C:\Users\Dmitriy\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:137008:13)
+      at Interface.emit (events.js:321:20)
+      at Interface._ttyWrite (readline.js:864:16)
+      at ReadStream.onkeypress (readline.js:203:10)
+      at ReadStream.emit (events.js:321:20)
+      at emitKeys (internal/readline/utils.js:450:14)
+      at emitKeys.next (<anonymous>)
+      at ReadStream.onData (readline.js:1131:36)
+      at ReadStream.emit (events.js:321:20)
+      at addChunk (_stream_readable.js:297:12)
+
+npm manifest: 
+  No manifest
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

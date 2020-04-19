@@ -1,26 +1,32 @@
-import appLication from './service/app';
-import initDb from './service/init/init-db';
+const debug =require('debug')('server:debug');
+import mongoose from 'mongoose';
+import config from 'config';
+import express from 'express';
+import bodyParser from 'body-parser';
+import userRouter from './routes/user';
 
-import dbConfig from '../config/development/db.json';
-import logConfig from '../config/development/log.json';
-import corsConfig from '../config/development/cors.json';
-import securityConfig from '../config/development/security.json';
-
-// #region Common components
-import ApplicationLogger from './common/lib/logger';
-// #endregion
-const PORT = process.env.PORT || 5000;
-Promise.all([
-  initDb(dbConfig.cnd)
-]).then(async ([dbConnection]) => {
-  const logger = new ApplicationLogger(logConfig);
-  const app = await appLication(logger, dbConnection, corsConfig, securityConfig);
-  app.listen(PORT, () => {
-    logger.info(`Server started on port ${PORT}`);
-  });
-  process.on('SIGINT', async () => {
-    await dbConnection.close();
-  });
-}).catch(err => {
-  console.log('An error occurred while initializing the application.', err);
+mongoose.connect(config.get('database'), {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
 });
+
+// callback when connection to mongodb is open
+mongoose.connection.once("open", function() {
+  console.log("MongoDB database connection established successfully");
+});
+
+const app = express();
+ // support json encoded bodies in the req
+ app.use(bodyParser.urlencoded({ extended: true }));
+
+ //sets the limit of json bodies in the req body.
+ app.use(bodyParser.json());
+ app.use('/api/v1/', userRouter);
+
+const listen =app.listen(config.get('port'),()=>{
+    debug(`server is running on port ${config.get('port')} and in ${config.get('name')} mode`);
+    console.log(`server is running on port ${config.get('port')} and in ${config.get('name')} mode`);
+})
+
+module.exports= app;
+module.exports.port=listen.address().port;

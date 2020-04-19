@@ -1,58 +1,63 @@
 {
   "name": "spacex-mt-api",
   "version": "1.0.0",
-  "description": "Back-end API for the SpaceX Mission Tracker React Native App. Built on Suvankar Kundu's Express ES6 Boiler Template.",
-  "main": "src/index.js",
-  "scripts": {
-    "build": "./node_modules/.bin/webpack --config ./build/webpack.api.base.babel.js",
-    "clean": "./node_modules/.bin/rimraf ./dist",
-    "lint": "./node_modules/.bin/eslint --color --format stylish ./src --fix",
-    "prebuild": "npm run clean",
-    "start": "./node_modules/.bin/babel-node src/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "description": "An API for the SpaceX Mission Tracker Native app",
+  "main": "index.js",
+  "repository": "https://github.com/DmitriyVdE/SpaceXMissionTracker",
   "author": "Dmitriy Van der Elst",
   "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/DmitriyVdE/SpaceXMissionTracker.git"
+  "private": true,
+  "scripts": {
+    "build": "babel src -d dist --source-maps",
+    "serve": "set NODE_ENV=production&& node dist/index.js",
+    "start": "set NODE_ENV=development&& babel-node src/index.js",
+    "dev": "set DEBUG=server:debug&& set NODE_ENV=development&& nodemon src/index.js --exec babel-node",
+    "test": "set DEBUG=server:debug&& set NODE_ENV=test&& mocha --require babel-core/register --reporter spec --exit tests/ --exec babel-node",
+    "test:watch": "set DEBUG=server:debug&& NODE_ENV=development&& mocha --require babel-core/register --watch --reporter spec tests/ --exec babel-node",
+    "eslint": "eslint src/**/*.js --ignore-pattern \"node_modules/\""
   },
-  "keywords": [
-    "nodejs",
-    "es6",
-    "es2015",
-    "babel",
-    "express",
-    "lint",
-    "api"
-  ],
   "devDependencies": {
     "babel-cli": "^6.26.0",
-    "babel-loader": "^7.1.2",
-    "babel-preset-env": "^1.6.1",
-    "eslint": "^6.8.0",
-    "eslint-config-standard": "^14.1.1",
-    "eslint-plugin-import": "^2.20.2",
-    "eslint-plugin-node": "^9.2.0",
-    "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-standard": "^4.0.1",
-    "file-loader": "^1.1.6",
-    "json-loader": "^0.5.7",
-    "rimraf": "^2.6.2",
-    "swagger-ui-express": "^4.1.4",
-    "webpack": "^3.10.0",
-    "webpack-node-externals": "^1.6.0"
+    "babel-preset-node8": "^1.2.0",
+    "chai": "^4.2.0",
+    "config": "^3.3.1",
+    "debug": "^4.1.1",
+    "mocha": "^7.1.1",
+    "nodemon": "^2.0.3",
+    "supertest": "^4.0.2"
   },
   "dependencies": {
-    "axios": "^0.18.0",
-    "body-parser": "1.18.2",
-    "cors": "2.8.4",
-    "express": "4.16.2",
-    "mongoose": "^5.9.7",
-    "morgan": "^1.10.0",
-    "passport": "0.4.0",
-    "passport-jwt": "3.0.1",
-    "winston": "2.4.0",
-    "winston-daily-rotate-file": "1.7.2"
+    "core-js": "^3",
+    "express": "^4.17.1",
+    "mongoose": "^5.9.9"
+  },
+  "babel": {
+    "presets": [
+      "node8"
+    ]
+  },
+  "engines": {
+    "node": ">=8"
+  },
+  "eslintConfig": {
+    "plugins": [
+      "node"
+    ],
+    "extends": [
+      "eslint:recommended",
+      "plugin:node/recommended"
+    ],
+    "rules": {
+      "node/no-unsupported-features/es-syntax": 0,
+      "node/no-unsupported-features/es-builtins": 0
+    },
+    "env": {
+      "node": true,
+      "es6": true
+    },
+    "parserOptions": {
+      "sourceType": "module",
+      "ecmaVersion": 2018
+    }
   }
 }
