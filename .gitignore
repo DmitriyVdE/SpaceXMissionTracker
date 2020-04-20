@@ -2,3 +2,5 @@
 API/.vscode/
 
 API/node_modules/
+
+API/build/
