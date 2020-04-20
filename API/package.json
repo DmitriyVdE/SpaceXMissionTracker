@@ -8,9 +8,8 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "build": "babel src -d dist --source-maps",
-    "buildwebpack": "webpack --config webpack.config.js",
-    "serve": "set NODE_ENV=production&& node dist/index.js",
+    "build": "babel src -d build --source-maps",
+    "serve": "set NODE_ENV=production&& node build/index.js",
     "start": "set NODE_ENV=development&& babel-node src/index.js",
     "dev": "set DEBUG=server:debug&& set NODE_ENV=development&& nodemon src/index.js --exec babel-node",
     "test": "set DEBUG=server:debug&& set NODE_ENV=test&& mocha --require babel-core/register --reporter spec --exit tests/ --exec babel-node",
@@ -18,30 +17,19 @@
     "eslint": "eslint src/**/*.js --ignore-pattern \"node_modules/\""
   },
   "devDependencies": {
-    "@babel/core": "^7.9.0",
-    "@babel/preset-env": "^7.9.5",
     "babel-cli": "^6.26.0",
-    "babel-loader": "^8.1.0",
     "babel-preset-node8": "^1.2.0",
     "chai": "^4.2.0",
     "config": "^3.3.1",
     "debug": "^4.1.1",
     "mocha": "^7.1.1",
     "nodemon": "^2.0.3",
-    "supertest": "^4.0.2",
-    "webpack": "^4.42.1",
-    "webpack-cli": "^3.3.11",
-    "webpack-node-externals": "^1.7.2"
+    "supertest": "^4.0.2"
   },
   "dependencies": {
-    "bcrypt": "^4.0.1",
     "core-js": "^3",
-    "dotenv": "^8.2.0",
-    "dotenv-webpack": "^1.7.0",
     "express": "^4.17.1",
-    "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.9.9",
-    "webpack-dev-server": "^3.10.3"
+    "mongoose": "^5.9.9"
   },
   "babel": {
     "presets": [
