@@ -1,4 +1,4 @@
-const debug =require('debug')('server:debug');
+const debug = require('debug')('server:debug');
 import mongoose from 'mongoose';
 import config from 'config';
 import express from 'express';
@@ -16,17 +16,17 @@ mongoose.connection.once("open", function() {
 });
 
 const app = express();
- // support json encoded bodies in the req
- app.use(bodyParser.urlencoded({ extended: true }));
+// support json encoded bodies in the req
+app.use(bodyParser.urlencoded({ extended: true }));
 
- //sets the limit of json bodies in the req body.
- app.use(bodyParser.json());
- app.use('/api/v1/', userRouter);
+//sets the limit of json bodies in the req body.
+app.use(bodyParser.json());
+app.use('/api/v1/', userRouter);
 
-const listen =app.listen(config.get('port'),()=>{
-    debug(`server is running on port ${config.get('port')} and in ${config.get('name')} mode`);
-    console.log(`server is running on port ${config.get('port')} and in ${config.get('name')} mode`);
+const listen = app.listen(config.get('port'),()=>{
+  debug(`server is running on port ${config.get('port')} and in ${config.get('name')} mode`);
+  console.log(`server is running on port ${config.get('port')} and in ${config.get('name')} mode`);
 })
 
-module.exports= app;
-module.exports.port=listen.address().port;
+module.exports = app;
+module.exports.port = listen.address().port;
