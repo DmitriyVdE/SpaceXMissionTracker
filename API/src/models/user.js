@@ -1,39 +1,73 @@
-import mongoose from 'mongoose'
+import config from "config";
+import mongoose from "mongoose";
+import bcrypt from "bcrypt";
 
-let user = new mongoose.Schema({
-  username: {
-    type: String,
-    required: true,
-    unique: true
+let userSchema = new mongoose.Schema(
+  {
+    username: {
+      type: String,
+      required: true,
+      trim: true,
+      unique: true,
+    },
+    email: {
+      type: String,
+      required: true,
+      trim: true,
+      unique: true,
+    },
+    password: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    role: {
+      type: String,
+      required: true,
+      trim: true,
+      default: 'normal'
+    },
+    firstname: {
+      type: String,
+      required: false,
+    },
+    lastname: {
+      type: String,
+      required: false,
+    },
+    preferences: {
+      setting1: {
+        type: String,
+        required: false,
+      }
+    },
+    confirmToken: {
+      type: String,
+      required: false,
+    },
   },
-  email: {
-    type: String,
-    required: true,
-    unique: true
-  },
-  password: {
-    type: String,
-    required: true
-  },
-  firstname: {
-    type: String,
-    required: false
-  },
-  lastname: {
-    type: String,
-    required: false
-  },
-  preferences: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Preferences',
-    required: false
-  },
-  confirmToken: {
-    type: String,
-    required: false
+  {
+    timestamps: true,
   }
-},{
-  timestamps: true
-})
+);
 
-export default mongoose.model("User", user)
+// encrypt password before save
+userSchema.pre("save", function (next) {
+  const user = this;
+  if (!user.isModified || !user.isNew) {
+    // don't rehash if it's an old user
+    next();
+  } else {
+    bcrypt.hash(user.password, config.get("saltingRounds"), function (err, hash) {
+      if (err) {
+        console.log("Error hashing password for user", user.username);
+        next(err);
+      } else {
+        user.password = hash;
+        next();
+      }
+    });
+  }
+});
+
+export default mongoose.model("User", userSchema);

@@ -4,8 +4,7 @@ import config from "config";
 import mongoose from "mongoose";
 import express from "express";
 import bodyParser from "body-parser";
-import router from "./routes/router";
-import key from "./jwt/key";
+import routes from "./routes/routes";
 
 dotenv.config();
 
@@ -20,7 +19,7 @@ mongoose.connect(
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    useCreateIndex: true
+    useCreateIndex: true,
   }
 );
 
@@ -35,7 +34,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 //sets the limit of json bodies in the req body.
 app.use(bodyParser.json());
-app.use("/api/v1/", router);
+
+app.use("/api/v1/", routes);
 
 const listen = app.listen(config.get("port"), () => {
   debug(
@@ -50,5 +50,5 @@ const listen = app.listen(config.get("port"), () => {
   );
 });
 
-export default app
+export default app;
 module.exports.port = listen.address().port;
