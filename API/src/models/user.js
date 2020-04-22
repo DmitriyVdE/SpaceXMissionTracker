@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from 'mongoose'
 
 let user = new mongoose.Schema({
   username: {
@@ -25,9 +25,10 @@ let user = new mongoose.Schema({
   },
   preferences: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Preferences'
+    ref: 'Preferences',
+    required: false
   },
-  confirm_token: {
+  confirmToken: {
     type: String,
     required: false
   }
@@ -35,4 +36,4 @@ let user = new mongoose.Schema({
   timestamps: true
 })
 
-module.exports = mongoose.model("User", user);
+export default mongoose.model("User", user)

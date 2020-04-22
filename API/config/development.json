@@ -1,5 +1,4 @@
 {
   "name": "Server Developement",
-  "database": "mongodb+srv://dbAPI:tQUkwdKHNOwKQy4Y@main-kzg1x.gcp.mongodb.net/sxmtdevdb?retryWrites=true&w=majority",
   "port": 3100
 }
