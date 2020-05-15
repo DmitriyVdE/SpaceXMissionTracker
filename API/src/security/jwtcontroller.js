@@ -18,8 +18,11 @@ async function validateToken(req, res, next) {
       // We call next to pass execution to the subsequent middleware
       next();
     } catch (err) {
-      // Throw an error just in case anything goes wrong with verification
-      throw new Error(err);
+      result = { 
+        error: `Authentication error. Invalid token.`,
+        status: 401
+      };
+      res.status(401).send(result);
     }
   } else {
     result = { 

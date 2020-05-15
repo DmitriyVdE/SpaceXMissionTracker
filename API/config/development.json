@@ -1,5 +1,5 @@
 {
   "name": "Server Developement",
   "port": 3100,
-  "saltingRounds": 10
+  "saltingRounds": 13
 }

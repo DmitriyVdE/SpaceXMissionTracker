@@ -41,6 +41,7 @@ let userSchema = new mongoose.Schema(
         required: false,
       }
     },
+    // Add token with issue datetime and expiration datetime 
     confirmToken: {
       type: String,
       required: false,

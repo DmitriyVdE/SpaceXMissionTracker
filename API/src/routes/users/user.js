@@ -1,12 +1,12 @@
 import express from "express";
 import userController from "../../controllers/user";
-import securityUtils from '../../security/utils'
+import jwtController from '../../security/jwtcontroller'
 
 let userRouter = express.Router();
 
 userRouter
   .route('/users')
-  .get(securityUtils.validateToken, userController.getUsers)
+  .get(jwtController.validateToken, userController.getUsers)
   .post(userController.createUser);
 
 userRouter
