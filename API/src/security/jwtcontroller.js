@@ -1,13 +1,28 @@
-import jwt from 'jsonwebtoken'
+import dotenv from "dotenv";
+import jwt from "jsonwebtoken";
+
+dotenv.config();
+
+function createToken(username, role) {
+  const payload = { username: username, role: role };
+  const options = {
+    expiresIn: "7d",
+    issuer: "https://localhost:3100",
+  };
+  const secret = process.env.JWT_SECRET;
+  const token = jwt.sign(payload, secret, options);
+
+  return token;
+}
 
 async function validateToken(req, res, next) {
-  const authorizationHeaader = req.headers.authorization;
+  const authorizationHeader = req.headers.authorization;
   let result;
-  if (authorizationHeaader) {
-    const token = req.headers.authorization.split(' ')[1]; // Bearer <token>
+  if (authorizationHeader) {
+    const token = req.headers.authorization.split(" ")[1]; // Bearer <token>
     const options = {
-      expiresIn: '2d',
-      issuer: 'https://spacexmt.com'
+      expiresIn: "2d",
+      issuer: "https://localhost:3100",
     };
     try {
       // verify makes sure that the token hasn't expired and has been issued by us
@@ -18,21 +33,22 @@ async function validateToken(req, res, next) {
       // We call next to pass execution to the subsequent middleware
       next();
     } catch (err) {
-      result = { 
-        error: `Authentication error. Invalid token.`,
-        status: 401
+      result = {
+        error: "Authentication error. Invalid token.",
+        status: 401,
       };
       res.status(401).send(result);
     }
   } else {
-    result = { 
-      error: `Authentication error. Token required.`,
-      status: 401
+    result = {
+      error: "Authentication error. Token required.",
+      status: 401,
     };
     res.status(401).send(result);
   }
 }
 
 export default {
+  createToken,
   validateToken,
-}
+};

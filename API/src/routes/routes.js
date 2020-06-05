@@ -1,6 +1,6 @@
 import express from "express";
-
-import userRouter from "./users/user";
+import userRouter from "./user";
+import faqRouter from "./faq";
 
 let router = express.Router();
 
@@ -13,5 +13,6 @@ router.get("/", function (req, res, next) {
 });
 
 router.use("/", userRouter);
+router.use("/", faqRouter);
 
 export default router;

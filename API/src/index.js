@@ -25,7 +25,7 @@ mongoose.connect(
 
 // callback when connection to mongodb is open
 mongoose.connection.once("open", function () {
-  console.log("MongoDB database connection established successfully");
+  debug("MongoDB database connection established successfully");
 });
 
 const app = express();
