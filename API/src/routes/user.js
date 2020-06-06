@@ -17,11 +17,11 @@ userRouter
   .post(jwtController.validateToken, userController.createUser);
 
 userRouter
-  .route("/users/edit/:id")
+  .route("/users/edit/:username")
   .put(jwtController.validateToken, userController.editUser)
 
 userRouter
-  .route("/users/delete/:id")
+  .route("/users/delete/:username")
   .delete(jwtController.validateToken, userController.deleteUser);
 
 userRouter

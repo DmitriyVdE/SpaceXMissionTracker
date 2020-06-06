@@ -8,17 +8,28 @@ async function getFaq(req, res) {
   let result = {};
 
   try {
-    Faq.find({}, (err, found) => {
-      if (!err) {
-        result.status = 200;
-        result.result = found;
-      } else {
-        debug(err);
-        result.status = 404;
-        result.error = err;
+    Faq.find(
+      {
+        $and: [
+          {
+            qApproved: true,
+            aApproved: true,
+            answered: true,
+          },
+        ],
+      },
+      (err, found) => {
+        if (!err) {
+          result.status = 200;
+          result.result = found;
+        } else {
+          debug(err);
+          result.status = 404;
+          result.error = err;
+        }
+        res.status(result.status).send(result);
       }
-      res.status(result.status).send(result);
-    });
+    );
   } catch (err) {
     debug(err);
     result.status = 500;
@@ -79,6 +90,7 @@ async function createFaq(req, res) {
       new_faq.save((err, saved) => {
         if (!err) {
           result.status = 201;
+          result.message = `The question has been created`;
           result.result = saved;
         } else {
           debug(err);
@@ -109,7 +121,7 @@ async function editFaq(req, res) {
     if (payload) {
       if (payload.role === "admin" || payload.role === "moderator") {
         Faq.findById(req.params.id, (err, found) => {
-          if (!err) {
+          if (!err && found != null) {
             found.question =
               req.body.question != null ? req.body.question : found.question;
             found.qApproved =
@@ -124,6 +136,7 @@ async function editFaq(req, res) {
             found.save((err, saved) => {
               if (!err) {
                 result.status = 200;
+                result.message = `The question has been edited`;
                 result.result = saved;
               } else {
                 debug(err);
@@ -165,26 +178,12 @@ async function deleteFaq(req, res) {
 
     if (payload) {
       if (payload.role === "admin" || payload.role === "moderator") {
-        Faq.findById(req.body.id , (err, found) => {
+        Faq.findByIdAndDelete(req.params.id, (err, deleted) => {
           if (!err) {
-            if (found != undefined) {
-              found.delete((err, deleted) => {
-                if (!err) {
-                  result.status = 200;
-                  result.message = `The question "${deleted.question}" has been deleted`;
-                  result.result = deleted;
-                } else {
-                  debug(err);
-                  result.status = 500;
-                  result.error = err;
-                }
-                res.status(result.status).send(result);
-              });
-            } else {
-              result.status = 404;
-              result.error = "User not found";
-              res.status(result.status).send(result);
-            }
+            result.status = 200;
+            result.message = `The question has been deleted`;
+            result.result = deleted;
+            res.status(result.status).send(result);
           } else {
             debug(err);
             result.status = 500;
@@ -210,8 +209,83 @@ async function deleteFaq(req, res) {
   }
 }
 
+async function helpfullFaq(req, res) {
+  let result = {};
+
+  if (req.body.helpful != undefined) {
+    try {
+      Faq.findById(req.params.id, (err, found) => {
+        if (!err && found != null) {
+          if (req.body.helpful) {
+            found.helpful++;
+          } else {
+            found.notHelpful++;
+          }
+          found.save((err, saved) => {
+            if (!err) {
+              result.status = 200;
+              result.message = `Your rating has been added to the question.`;
+              result.result = saved;
+            } else {
+              debug(err);
+              result.status = 500;
+              result.error = err;
+            }
+            res.status(result.status).send(result);
+          })
+        } else {
+          debug(err);
+          result.status = 404;
+          result.error = err;
+          res.status(result.status).send(result);
+        }
+      });
+    } catch (err) {
+      debug(err);
+      result.status = 500;
+      result.error = err;
+      res.status(result.status).send(result);
+    }
+  } else {
+    result.status = 400;
+    result.error = "Invalid request";
+    res.status(result.status).send(result);
+  }
+}
+
 // Add helpfull or not + feedback entry if available
-async function faqAddFeedback(req, res) {}
+async function feedbackFaq(req, res) {
+  let result = {};
+
+  try {
+    const payload = req.decoded;
+
+    if (payload) {
+      Faq.findById(req.params.id, (err, found) => {
+        if (!err) {
+          result.status = 200;
+          result.message = `Your feedback has been added to the question.`;
+          result.result = found;
+          res.status(result.status).send(result);
+        } else {
+          debug(err);
+          result.status = 404;
+          result.error = err;
+          res.status(result.status).send(result);
+        }
+      });
+    } else {
+      result.status = 401;
+      result.error = "Authentication error";
+      res.status(result.status).send(result);
+    }
+  } catch (err) {
+    debug(err);
+    result.status = 500;
+    result.error = err;
+    res.status(result.status).send(result);
+  }
+}
 
 export default {
   searchFaq,
@@ -219,5 +293,6 @@ export default {
   createFaq,
   editFaq,
   deleteFaq,
-  faqAddFeedback,
+  helpfullFaq,
+  feedbackFaq,
 };

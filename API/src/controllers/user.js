@@ -12,6 +12,7 @@ async function register(req, res) {
   try {
     const new_user = new User({
       username: req.body.username,
+      normalisedUsername: req.body.username,
       password: req.body.password,
       email: req.body.email,
       role: "normal",
@@ -46,37 +47,40 @@ async function login(req, res) {
   try {
     const { username, password } = req.body;
 
-    await User.findOne({ username: username }, (err, user) => {
-      if (!err && user) {
-        bcrypt
-          .compare(password, user.password)
-          .then((match) => {
-            if (match) {
-              result.token = jwtController.createToken(
-                user.username,
-                user.role
-              );
-              result.status = 200;
-              result.result = user;
-              result.result.password = null;
-            } else {
-              result.status = 401;
-              result.error = "Authentication error";
-            }
-            res.status(result.status).send(result);
-          })
-          .catch((err) => {
-            debug(err);
-            result.status = 500;
-            result.error = err;
-            res.status(result.status).send(result);
-          });
-      } else {
-        result.status = 404;
-        result.error = "User not found.";
-        res.status(result.status).send(result);
+    User.findOne(
+      { normalisedUsername: username.toUpperCase() },
+      (err, user) => {
+        if (!err && user) {
+          bcrypt
+            .compare(password, user.password)
+            .then((match) => {
+              if (match) {
+                result.token = jwtController.createToken(
+                  user.username,
+                  user.role
+                );
+                result.status = 200;
+                result.result = user;
+                result.result.password = null;
+              } else {
+                result.status = 401;
+                result.error = "Authentication error";
+              }
+              res.status(result.status).send(result);
+            })
+            .catch((err) => {
+              debug(err);
+              result.status = 500;
+              result.error = err;
+              res.status(result.status).send(result);
+            });
+        } else {
+          result.status = 404;
+          result.error = "User not found.";
+          res.status(result.status).send(result);
+        }
       }
-    });
+    );
   } catch (err) {
     debug(err);
     result.status = 500;
@@ -128,37 +132,6 @@ async function searchUser(req, res) {
   }
 }
 
-// Additional
-async function getUsers(req, res) {
-  let result = {};
-  try {
-    const payload = req.decoded;
-    if (payload && payload.role === "admin") {
-      User.find({}, (err, users) => {
-        if (!err) {
-          result.status = 200;
-          result.error = err;
-          result.result = users;
-        } else {
-          debug(err);
-          result.status = 500;
-          result.error = err;
-        }
-        res.status(result.status).send(result);
-      });
-    } else {
-      result.status = 401;
-      result.error = "Authentication error";
-      res.status(result.status).send(result);
-    }
-  } catch (err) {
-    debug(err);
-    result.status = 500;
-    result.error = err;
-    res.status(result.status).send(result);
-  }
-}
-
 async function getUser(req, res) {
   let result = {};
 
@@ -168,10 +141,11 @@ async function getUser(req, res) {
     if (payload) {
       if (
         payload.role === "admin" ||
-        (payload.role === "normal" && payload.username === req.params.username)
+        (payload.role === "normal" &&
+          payload.username.toUpperCase() === req.params.username.toUpperCase())
       ) {
         const found_user = await User.findOne({
-          username: req.params.username,
+          normalisedUsername: req.params.username.toUpperCase(),
         }).exec();
 
         if (found_user) {
@@ -211,6 +185,7 @@ async function createUser(req, res) {
       if (payload.role === "admin") {
         let new_user = new User({
           username: req.body.username,
+          normalisedUsername: req.body.username,
           email: req.body.email,
           password: req.body.password,
           role: req.body.role,
@@ -260,26 +235,27 @@ async function editUser(req, res) {
 
     if (payload) {
       if (payload.role === "admin") {
-        User.findOne({ username: req.body.username }, (err, user) => {
-          if (!err) {
-            user.role = req.body.role != undefined ? req.body.role : user.role;
-            user.email =
-              req.body.email != undefined ? req.body.email : user.email;
-            user.phone =
-              req.body.phone != undefined ? req.body.phone : user.phone;
-            user.firstname =
+        User.find({ username: req.params.username }, (err, found) => {
+          if (!err && found != null) {
+            found.role =
+              req.body.role != undefined ? req.body.role : found.role;
+            found.email =
+              req.body.email != undefined ? req.body.email : found.email;
+            found.phone =
+              req.body.phone != undefined ? req.body.phone : found.phone;
+            found.firstname =
               req.body.firstname != undefined
                 ? req.body.firstname
-                : user.firstname;
-            user.lastname =
+                : found.firstname;
+            found.lastname =
               req.body.lastname != undefined
                 ? req.body.lastname
-                : user.lastname;
+                : found.lastname;
 
-            user.save((err, user) => {
+            found.save((err, edited) => {
               if (!err) {
                 result.status = 200;
-                result.result = user;
+                result.result = edited;
                 result.result.password = null;
               } else {
                 debug(err);
@@ -357,37 +333,40 @@ async function deleteUser(req, res) {
 
     if (payload) {
       if (payload.role === "admin") {
-        User.findOne({ username: req.body.username }, (err, user) => {
-          if (!err) {
-            if (user != undefined) {
-              user.delete((err, user) => {
-                if (!err) {
-                  result.status = 200;
-                  result.message = `The user "${user.username}" has been deleted`;
-                  result.result = user;
-                  result.result.password = null;
-                } else {
-                  debug(err);
-                  result.status = 500;
-                  result.error = err;
-                }
+        User.findOne(
+          { normalisedUsername: req.body.username.toUpperCase() },
+          (err, user) => {
+            if (!err) {
+              if (user != undefined) {
+                user.delete((err, user) => {
+                  if (!err) {
+                    result.status = 200;
+                    result.message = `The user '${user.username}' has been deleted`;
+                    result.result = user;
+                    result.result.password = null;
+                  } else {
+                    debug(err);
+                    result.status = 500;
+                    result.error = err;
+                  }
+                  res.status(result.status).send(result);
+                });
+              } else {
+                result.status = 404;
+                result.error = "User not found";
                 res.status(result.status).send(result);
-              });
+              }
             } else {
-              result.status = 404;
-              result.error = "User not found";
+              debug(err);
+              result.status = 500;
+              result.error = err;
               res.status(result.status).send(result);
             }
-          } else {
-            debug(err);
-            result.status = 500;
-            result.error = err;
-            res.status(result.status).send(result);
           }
-        });
+        );
       } else if (
         payload.role === "normal" &&
-        payload.username === req.body.username
+        payload.username.toUpperCase() === req.body.username.toUpperCase()
       ) {
         User.findOne({ username: payload.username }, (err, user) => {
           if (!err) {
@@ -395,7 +374,7 @@ async function deleteUser(req, res) {
               user.delete((err, user) => {
                 if (!err) {
                   result.status = 200;
-                  result.message = `The user "${user.username}" has been deleted`;
+                  result.message = `The user '${user.username}' has been deleted`;
                   result.result = user;
                   result.result.password = null;
                 } else {
@@ -439,7 +418,6 @@ export default {
   login,
   searchUser,
   getUser,
-  getUsers,
   createUser,
   editUser,
   deleteUser,
