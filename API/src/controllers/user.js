@@ -64,7 +64,7 @@ async function login(req, res) {
                 result.result.password = null;
               } else {
                 result.status = 401;
-                result.error = "Authentication error";
+                result.error = "Username or password is incorrect";
               }
               res.status(result.status).send(result);
             })
@@ -224,9 +224,6 @@ async function createUser(req, res) {
   }
 }
 
-// TODO (maybe): add coupons, favStores and ownerOf to editUser
-//               This will require the addition of arraychecking for all three arrays
-//               Except maybe coupons since this array has seperate functions
 async function editUser(req, res) {
   let result = {};
 
@@ -235,78 +232,84 @@ async function editUser(req, res) {
 
     if (payload) {
       if (payload.role === "admin") {
-        User.find({ username: req.params.username }, (err, found) => {
-          if (!err && found != null) {
-            found.role =
-              req.body.role != undefined ? req.body.role : found.role;
-            found.email =
-              req.body.email != undefined ? req.body.email : found.email;
-            found.phone =
-              req.body.phone != undefined ? req.body.phone : found.phone;
-            found.firstname =
-              req.body.firstname != undefined
-                ? req.body.firstname
-                : found.firstname;
-            found.lastname =
-              req.body.lastname != undefined
-                ? req.body.lastname
-                : found.lastname;
+        User.findOne(
+          { normalisedUsername: req.params.username.toUpperCase() },
+          (err, found) => {
+            if (!err && found != null) {
+              found.role =
+                req.body.role != undefined ? req.body.role : found.role;
+              found.email =
+                req.body.email != undefined ? req.body.email : found.email;
+              found.phone =
+                req.body.phone != undefined ? req.body.phone : found.phone;
+              found.firstname =
+                req.body.firstname != undefined
+                  ? req.body.firstname
+                  : found.firstname;
+              found.lastname =
+                req.body.lastname != undefined
+                  ? req.body.lastname
+                  : found.lastname;
 
-            found.save((err, edited) => {
-              if (!err) {
-                result.status = 200;
-                result.result = edited;
-                result.result.password = null;
-              } else {
-                debug(err);
-                result.status = 500;
-                result.error = err;
-              }
+              found.save((err, edited) => {
+                if (!err) {
+                  result.status = 200;
+                  result.result = edited;
+                  result.result.password = null;
+                } else {
+                  debug(err);
+                  result.status = 500;
+                  result.error = err;
+                }
+                res.status(result.status).send(result);
+              });
+            } else {
+              result.status = 404;
+              result.error = "User not found";
               res.status(result.status).send(result);
-            });
-          } else {
-            result.status = 404;
-            result.error = "User not found";
-            res.status(result.status).send(result);
+            }
           }
-        });
+        );
       } else if (
         payload.role === "normal" &&
-        payload.username === req.body.username
+        payload.username.toUpperCase() === req.params.username.toUpperCase()
       ) {
-        User.findOne({ username: req.body.username }, (err, user) => {
-          if (!err) {
-            user.email =
-              req.body.email != undefined ? req.body.email : user.email;
-            user.phone =
-              req.body.phone != undefined ? req.body.phone : user.phone;
-            user.firstname =
-              req.body.firstname != undefined
-                ? req.body.firstname
-                : user.firstname;
-            user.lastname =
-              req.body.lastname != undefined
-                ? req.body.lastname
-                : user.lastname;
+        User.findOne(
+          { normalisedUsername: req.params.username.toUpperCase() },
+          (err, found) => {
+            if (!err && found != null) {
+              found.email =
+                req.body.email != undefined ? req.body.email : found.email;
+              found.phone =
+                req.body.phone != undefined ? req.body.phone : found.phone;
+              found.firstname =
+                req.body.firstname != undefined
+                  ? req.body.firstname
+                  : found.firstname;
+              found.lastname =
+                req.body.lastname != undefined
+                  ? req.body.lastname
+                  : found.lastname;
 
-            user.save((err, user) => {
-              if (!err) {
-                result.status = 200;
-                result.result = user;
-                result.result.password = null;
-              } else {
-                debug(err);
-                result.status = 500;
-                result.error = err;
-              }
+              found.save((err, edited) => {
+                if (!err) {
+                  result.status = 200;
+                  result.result = edited;
+                  result.result.password = null;
+                } else {
+                  debug(err);
+                  result.status = 500;
+                  result.error = err;
+                }
+                res.status(result.status).send(result);
+              });
+            } else {
+              result.status = 404;
+              result.error = "User not found";
               res.status(result.status).send(result);
-            });
-          } else {
-            result.status = 404;
-            result.error = "User not found";
-            res.status(result.status).send(result);
+            }
           }
-        });
+        );
       } else {
         result.status = 403;
         result.error = "Access denied";
@@ -333,68 +336,42 @@ async function deleteUser(req, res) {
 
     if (payload) {
       if (payload.role === "admin") {
-        User.findOne(
-          { normalisedUsername: req.body.username.toUpperCase() },
-          (err, user) => {
-            if (!err) {
-              if (user != undefined) {
-                user.delete((err, user) => {
-                  if (!err) {
-                    result.status = 200;
-                    result.message = `The user '${user.username}' has been deleted`;
-                    result.result = user;
-                    result.result.password = null;
-                  } else {
-                    debug(err);
-                    result.status = 500;
-                    result.error = err;
-                  }
-                  res.status(result.status).send(result);
-                });
-              } else {
-                result.status = 404;
-                result.error = "User not found";
-                res.status(result.status).send(result);
-              }
+        User.findOneAndDelete(
+          { normalisedUsername: req.params.username.toUpperCase() },
+          (err, deleted) => {
+            if (!err && deleted != null) {
+              result.status = 200;
+              result.message = `The user '${deleted.username}' has been deleted`;
+              result.result = deleted;
+              result.result.password = null;
             } else {
               debug(err);
-              result.status = 500;
-              result.error = err;
-              res.status(result.status).send(result);
+              result.status = 404;
+              result.error = "User not found";
             }
+            res.status(result.status).send(result);
           }
         );
       } else if (
         payload.role === "normal" &&
-        payload.username.toUpperCase() === req.body.username.toUpperCase()
+        payload.username.toUpperCase() === req.params.username.toUpperCase()
       ) {
-        User.findOne({ username: payload.username }, (err, user) => {
-          if (!err) {
-            if (user != undefined) {
-              user.delete((err, user) => {
-                if (!err) {
-                  result.status = 200;
-                  result.message = `The user '${user.username}' has been deleted`;
-                  result.result = user;
-                  result.result.password = null;
-                } else {
-                  debug(err);
-                  result.status = 500;
-                  result.error = err;
-                }
-                res.status(result.status).send(result);
-              });
+        User.findOneAndDelete(
+          { normalisedUsername: req.params.username.toUpperCase() },
+          (err, deleted) => {
+            if (!err && deleted != null) {
+              result.status = 200;
+              result.message = `The user '${deleted.username}' has been deleted`;
+              result.result = deleted;
+              result.result.password = null;
             } else {
+              debug(err);
               result.status = 404;
               result.error = "User not found";
-              res.status(result.status).send(result);
             }
-          } else {
-            result.status = 404;
-            result.error = "User not found";
             res.status(result.status).send(result);
           }
-        });
+        );
       } else {
         result.status = 403;
         result.error = "Access denied";

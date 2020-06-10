@@ -179,7 +179,7 @@ async function deleteFaq(req, res) {
     if (payload) {
       if (payload.role === "admin" || payload.role === "moderator") {
         Faq.findByIdAndDelete(req.params.id, (err, deleted) => {
-          if (!err) {
+          if (!err && deleted != null) {
             result.status = 200;
             result.message = `The question has been deleted`;
             result.result = deleted;

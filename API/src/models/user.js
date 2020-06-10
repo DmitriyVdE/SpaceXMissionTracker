@@ -26,7 +26,7 @@ let userSchema = new mongoose.Schema(
       trim: true,
       lowercase: true,
       unique: true,
-      match: /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/,
+      match: [/^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/, "Invalid email address."],
     },
     password: {
       type: String,
@@ -34,7 +34,7 @@ let userSchema = new mongoose.Schema(
       trim: true,
       match: [/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&]).{8,}$/, "Password must contain at least one lower case, one upper case, one number and one special character."],
       minlength: 8,
-      maxlength: 32,
+      maxlength: 64,
     },
     role: {
       type: String,
