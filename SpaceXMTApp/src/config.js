@@ -1,0 +1,1 @@
+module.exports.baseAPIUrl = "http://192.168.1.2:3100/api/v1/";
