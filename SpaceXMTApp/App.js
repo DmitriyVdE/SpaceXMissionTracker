@@ -1,9 +1,14 @@
-import * as React from "react";
+import React, { useState } from "react";
 import { Provider as PaperProvider } from "react-native-paper";
+import UserManager from "./src/services/UserContext";
 import AppNavigator from "./src/navigation";
 import axios from "react-native-axios";
 
-export default function App() {
+function App() {
+  const [user, setUser] = useState({
+    userData: { loggedIn: false, lastLogin: false },
+    setUserData: (data) => setUser({ ...user, userData: data }),
+  });
   /*
   1: initialise userContext
   2: load saved data if exists
@@ -17,10 +22,13 @@ export default function App() {
   //axios.defaults.headers.post["Content-Type"] =
   //  "application/x-www-form-urlencoded";
 
-
   return (
     <PaperProvider>
+      <UserManager>
         <AppNavigator />
+      </UserManager>
     </PaperProvider>
   );
 }
+
+export default App;

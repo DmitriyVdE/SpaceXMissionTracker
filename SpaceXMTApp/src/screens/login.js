@@ -1,10 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, View, AsyncStorage, BackHandler } from "react-native";
 import { Colors, TextInput, Button } from "react-native-paper";
 import Header from "../components/header";
 import appConfig from "../config";
+import ADMan from "../utilities/AsyncDataManager";
 
 function Login({ navigation }) {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
   useEffect(() => {
     const backHandler = BackHandler.addEventListener(
       "hardwareBackPress",
@@ -40,8 +44,14 @@ function Login({ navigation }) {
                 loggedIn: true,
                 lastLogin: Date.now(),
               };
-              setLocalStorage("UserData", JSON.stringify(userData));
-              navigation.navigate("Home");
+              const saved = ADMan.setLocalStorage("UserData", JSON.stringify(userData));
+              if (saved) {
+                navigation.navigate("Home");
+              } else {
+                console.log("Can't save userdata");
+              }
+            } else {
+              console.log(json);
             }
           })
           .catch((error) => {
@@ -63,7 +73,11 @@ function Login({ navigation }) {
 
   return (
     <>
-      <Header navigation={navigation} iconName="chevron-left" iconSize="35" />
+      <Header
+        navigation={navigation}
+        iconName="chevron-left"
+        text="Back"
+      />
       <View style={styles.container}>
         <View style={styles.content}>
           <TextInput
@@ -72,7 +86,7 @@ function Login({ navigation }) {
             style={styles.textInput}
             placeholder="Username"
             autoCapitalize="none"
-            onChangeText={(text) => (this.loginUserName = text)}
+            onChangeText={(text) => setUsername(text)}
           />
           <TextInput
             name="password"
@@ -81,25 +95,16 @@ function Login({ navigation }) {
             placeholder="Password"
             autoCapitalize="none"
             secureTextEntry={true}
-            onChangeText={(text) => (this.loginPassword = text)}
+            onChangeText={(text) => setPassword(text)}
           />
           <Button
             style={styles.button}
             mode="outlined"
             onPress={() => {
-              login(this.loginUserName, this.loginPassword);
+              login(username, password);
             }}
           >
             Log in
-          </Button>
-          <Button
-            style={styles.button}
-            mode="outlined"
-            onPress={() => {
-              navigation.goBack();
-            }}
-          >
-            Go Back
           </Button>
         </View>
       </View>

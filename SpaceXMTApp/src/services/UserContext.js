@@ -1,8 +1,26 @@
-import React from 'react'
+import React, { createContext, useState, useContext } from "react";
 
-const UserContext = React.createContext({ loggedIn: false })
+const initialProps = {
+  userData: { loggedIn: null, lastLogin: null },
+  setUserData: (data) => setUser({ ...userData, userData: data }),
+};
 
-export const UserProvider = UserContext.Provider
-export const UserConsumer = UserContext.Consumer
+const UserContext = createContext(initialProps);
 
-export default UserContext
+const UserManager = (props) => {
+  const { children } = props;
+  const [user, setUser] = useState(initialProps.userData);
+
+  return (
+    <UserContext.Provider value={{ user, setUser }}>
+      {children}
+    </UserContext.Provider>
+  );
+};
+
+export const useUserContext = () => {
+  const userContext = useContext(UserContext);
+  return userContext;
+};
+
+export default UserManager;

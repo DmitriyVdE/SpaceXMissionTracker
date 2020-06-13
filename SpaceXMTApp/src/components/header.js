@@ -1,18 +1,21 @@
 import * as React from "react";
 import { StyleSheet } from "react-native";
-import { Appbar, IconButton, Colors } from "react-native-paper";
+import { Appbar, Button, Colors } from "react-native-paper";
 
-function Header({ navigation, iconName, iconSize }) {
+function Header({ navigation, iconName, text }) {
   let headerButton = "";
   if (iconName) {
     headerButton = (
-      <IconButton
-        style={styles.close}
+      <Button
+        style={styles.button}
+        labelStyle={styles.buttonLabel}
         icon={iconName}
         color={Colors.black}
-        size={parseInt(iconSize)}
+        compact={true}
         onPress={() => navigation.goBack()}
-      />
+      >
+        {text}
+      </Button>
     );
   } else {
     headerButton = <IconButton />;
@@ -25,7 +28,7 @@ function Header({ navigation, iconName, iconSize }) {
 const styles = StyleSheet.create({
   headerContainer: {
     backgroundColor: "#FFFFFF",
-    right: 0
+    right: 0,
   },
   container: {
     flex: 1,
@@ -35,6 +38,12 @@ const styles = StyleSheet.create({
   title: {
     color: "#2E7166",
   },
+  button: {
+    justifyContent: "center"
+  },
+  buttonLabel: {
+    fontSize: 18
+  }
 });
 
 export default Header;

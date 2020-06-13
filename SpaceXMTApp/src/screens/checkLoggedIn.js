@@ -1,42 +1,61 @@
-import * as React from "react";
-//import UserContext from "../services/UserContext";
-import { StyleSheet, View, Image, ActivityIndicator, BackHandler } from "react-native";
+import React, { useEffect } from "react";
+import { useUserContext } from "../services/UserContext";
+import ADMan from "../utilities/AsyncDataManager";
+import { StyleSheet, View, Image, ActivityIndicator } from "react-native";
 import { Text, Colors } from "react-native-paper";
 
-export default class checkLoggedIn extends React.Component {
-  //static contextType = UserContext;
+const checkLoggedIn = ({ navigation }) => {
+  const { user, setUser } = useUserContext();
 
-  constructor(props) {
-    super(props);
+  const fillUserData = (err, res) => {
+    if (!err) {
+      const values = JSON.parse(res);
+      if (values) {
+        setUser(values);
+      } else {
+        setUser({ lastLogin: false, loggedIn: false });
+      }
+    } else {
+      console.log(err);
+    }
   }
 
-  componentDidMount() {
-    const user = this.context;
-    setTimeout(() => { {user.loggedIn ? this.props.navigation.navigate("Home") : this.props.navigation.navigate("Welcome")}; }, 1000);
-  }
+  useEffect(() => {
+    if (user.lastLogin === null && user.loggedIn === null) {
+      ADMan.getLocalStorage("UserData", fillUserData);
+    }
+  }, []);
 
-  render() {
-    return (
-      <>
-        <View style={styles.container}>
-          <View style={styles.content}>
-            <Image
-              style={styles.logo}
-              source={require("../assets/images/spacex.png")}
-              resizeMode="contain"
-              PlaceholderContent={<ActivityIndicator />}
-            />
-            <Text style={styles.logoText}>Mission Tracker</Text>
-          </View>
-          <Text style={styles.disclaimer}>
-            Disclaimer: This app and it's developer are in no way affiliated
-            with SpaceX or it's subsidiaries.
-          </Text>
+  useEffect(() => {
+    if (user.loggedIn !== null) {
+      if (user.loggedIn) {
+        navigation.navigate("Home");
+      } else {
+        navigation.navigate("Welcome");
+      }
+    }
+  }, [user]);
+
+  return (
+    <>
+      <View style={styles.container}>
+        <View style={styles.content}>
+          <Image
+            style={styles.logo}
+            source={require("../assets/images/spacex.png")}
+            resizeMode="contain"
+            PlaceholderContent={<ActivityIndicator />}
+          />
+          <Text style={styles.logoText}>Mission Tracker</Text>
         </View>
-      </>
-    );
-  }
-}
+        <Text style={styles.disclaimer}>
+          Disclaimer: This app and it's developer are in no way affiliated with
+          SpaceX or it's subsidiaries.
+        </Text>
+      </View>
+    </>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -68,3 +87,5 @@ const styles = StyleSheet.create({
     color: Colors.redA700,
   },
 });
+
+export default checkLoggedIn;

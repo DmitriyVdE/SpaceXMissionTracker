@@ -17,7 +17,11 @@ function Register({ navigation }) {
 
   return (
     <>
-      <Header navigation={navigation} iconName="chevron-left" iconSize="35" />
+      <Header
+        navigation={navigation}
+        iconName="chevron-left"
+        text="Back"
+      />
       <View style={styles.container}>
         <View style={styles.content}>
           <TextInput
@@ -46,15 +50,6 @@ function Register({ navigation }) {
             onPress={() => console.log("logging in")}
           >
             Register
-          </Button>
-          <Button
-            style={styles.button}
-            mode="outlined"
-            onPress={() => {
-              navigation.goBack();
-            }}
-          >
-            Go Back
           </Button>
         </View>
       </View>
