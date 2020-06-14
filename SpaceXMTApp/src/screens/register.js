@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { StyleSheet, View, ScrollView, BackHandler } from "react-native";
 import { Colors, TextInput, Button, Text } from "react-native-paper";
-import Header from "../components/header";
+import Header from "../components/Header";
 import { useUserContext } from "../services/UserContext";
 import appConfig from "../config";
 import ADMan from "../utilities/AsyncDataManager";
@@ -270,7 +270,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     paddingHorizontal: 10,
-    paddingVertical: 20,
+    paddingVertical: 10,
     justifyContent: "flex-start",
     alignItems: "stretch",
   },

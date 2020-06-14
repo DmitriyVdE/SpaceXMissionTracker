@@ -1,25 +1,12 @@
 import React, { useEffect } from "react";
-import { StyleSheet, View, BackHandler } from "react-native";
+import { StyleSheet, View, ScrollView, BackHandler } from "react-native";
 import { Text, Button, Colors } from "react-native-paper";
 import { useUserContext } from "../services/UserContext";
-import ADMan from "../utilities/AsyncDataManager";
+import LogoutButton from "../components/LogoutButton";
+import CardButton from "../components/CardButton";
 
 const Home = ({ navigation }) => {
   const { user, setUser } = useUserContext();
-
-  const logout = () => {
-    const userData = { lastLogin: null, loggedIn: null, token: null, userInfo: null };
-    setUser(userData);
-    ADMan.setLocalStorage("UserData", userData, finishLogout);
-  };
-
-  const finishLogout = (err) => {
-    if (!err) {
-      navigation.navigate("CheckLoggedIn");
-    } else {
-      console.log(err);
-    }
-  }
 
   useEffect(() => {
     const backHandler = BackHandler.addEventListener(
@@ -35,19 +22,46 @@ const Home = ({ navigation }) => {
   return (
     <>
       <View style={styles.container}>
-        <View style={styles.content}>
-          <Text style={styles.mainText}>Home</Text>
-          <Button
-            style={styles.button}
-            mode="outlined"
-            onPress={() => {
-              console.log('logout');
-              logout();
-            }}
-          >
-            Log out
-          </Button>
-        </View>
+        <ScrollView contentContainerStyle={styles.content}>
+          <CardButton
+          // Maybe make this a special card with a timer or add it as an optional parameter
+            navigation={navigation}
+            targetScreen={"NextLaunch"}
+            cardTitle={"Next Launch"}
+            backgroundImage={require("../assets/images/next_launch.jpg")}
+          />
+          <CardButton
+            navigation={navigation}
+            targetScreen={"Launches"}
+            cardTitle={"Launches"}
+            backgroundImage={require("../assets/images/next_launch.jpg")}
+          />
+          <CardButton
+            navigation={navigation}
+            targetScreen={"Missions"}
+            cardTitle={"Missions"}
+            backgroundImage={require("../assets/images/next_launch.jpg")}
+          />
+          <CardButton
+            navigation={navigation}
+            targetScreen={"Ships"}
+            cardTitle={"Ships"}
+            backgroundImage={require("../assets/images/next_launch.jpg")}
+          />
+          <CardButton
+            navigation={navigation}
+            targetScreen={"InfoAndHistory"}
+            cardTitle={"Info & History"}
+            backgroundImage={require("../assets/images/next_launch.jpg")}
+          />
+          <CardButton
+            navigation={navigation}
+            targetScreen={"FAQ"}
+            cardTitle={"FAQ"}
+            backgroundImage={require("../assets/images/next_launch.jpg")}
+          />
+          <LogoutButton navigation={navigation} />
+        </ScrollView>
       </View>
     </>
   );
@@ -56,14 +70,14 @@ const Home = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#FFF",
+    paddingTop: 25,
     paddingHorizontal: 10,
-    paddingVertical: 20,
+    justifyContent: "flex-start",
+    alignItems: "stretch",
   },
   content: {
-    alignItems: "center",
-    justifyContent: "center",
-    flex: 1,
+    paddingBottom: 10,
   },
   mainText: {
     textAlign: "center",

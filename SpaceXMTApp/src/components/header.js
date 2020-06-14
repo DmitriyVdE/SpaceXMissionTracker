@@ -18,7 +18,7 @@ const Header = ({ navigation, iconName, text }) => {
       </Button>
     );
   } else {
-    headerButton = <IconButton />;
+    headerButton = <Button />;
   }
   return (
     <Appbar.Header style={styles.headerContainer}>{headerButton}</Appbar.Header>

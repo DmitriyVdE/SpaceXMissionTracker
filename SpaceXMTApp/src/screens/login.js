@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { StyleSheet, View, BackHandler } from "react-native";
 import { Colors, TextInput, Button, Text } from "react-native-paper";
-import Header from "../components/header";
+import Header from "../components/Header";
 import appConfig from "../config";
 import ADMan from "../utilities/AsyncDataManager";
 import { useUserContext } from "../services/UserContext";
@@ -121,7 +121,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     paddingHorizontal: 10,
-    paddingVertical: 20,
+    // MAYBE CHANGE THIS LATER -> Top bar interference or overlaying
+    paddingVertical: 10,
     justifyContent: "flex-start",
     alignItems: "stretch",
   },

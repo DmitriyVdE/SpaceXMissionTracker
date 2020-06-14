@@ -1,10 +1,16 @@
 import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
-import CheckLoggedIn from "../screens/checkLoggedIn";
-import Welcome from "../screens/welcome";
-import Login from "../screens/login";
-import Register from "../screens/register";
-import Home from "../screens/home";
+import CheckLoggedIn from "../screens/CheckLoggedIn";
+import Welcome from "../screens/Welcome";
+import Login from "../screens/Login";
+import Register from "../screens/Register";
+import Home from "../screens/Home";
+import NextLaunch from "../screens/NextLaunch";
+import Launches from "../screens/Launches";
+import Missions from "../screens/Missions";
+import Ships from "../screens/Ships";
+import InfoAndHistory from "../screens/InfoAndHistory";
+import FAQ from "../screens/FAQ";
 
 const StackNavigator = createStackNavigator(
   {
@@ -22,6 +28,24 @@ const StackNavigator = createStackNavigator(
     },
     Home: {
       screen: Home,
+    },
+    NextLaunch: {
+      screen: NextLaunch,
+    },
+    Launches: {
+      screen: Launches,
+    },
+    Missions: {
+      screen: Missions,
+    },
+    Ships: {
+      screen: Ships,
+    },
+    InfoAndHistory: {
+      screen: InfoAndHistory,
+    },
+    FAQ: {
+      screen: FAQ,
     },
   },
   {
