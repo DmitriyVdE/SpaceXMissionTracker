@@ -1,21 +1,18 @@
-import { AsyncStorage } from "react-native";
+import AsyncStorage from "@react-native-community/async-storage";
 
-async function getLocalStorage(key, callback) {
+const getLocalStorage = async (key, callback) => {
   try {
-    const value = await AsyncStorage.getItem(key, callback);
-    if (value !== null) {
-      return value;
-    }
-    return null;
+    return await AsyncStorage.getItem(key, callback);
   } catch (error) {
     console.log(error);
     return false;
   }
 }
 
-async function setLocalStorage(key, value) {
+const setLocalStorage = async (key, value, callback) => {
   try {
-    await AsyncStorage.setItem(key, value);
+    const jsonValue = JSON.stringify(value)
+    await AsyncStorage.setItem(key, jsonValue, callback);
     return true;
   } catch (error) {
     console.log(error);
@@ -23,7 +20,7 @@ async function setLocalStorage(key, value) {
   }
 }
 
-async function removeLocalStorage(key) {
+const removeLocalStorage = async (key) => {
   try {
     await AsyncStorage.removeItem(key);
     return true;

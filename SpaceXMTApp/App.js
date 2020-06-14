@@ -1,20 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import { Provider as PaperProvider } from "react-native-paper";
 import UserManager from "./src/services/UserContext";
 import AppNavigator from "./src/navigation";
 import axios from "react-native-axios";
 
-function App() {
-  const [user, setUser] = useState({
-    userData: { loggedIn: false, lastLogin: false },
-    setUserData: (data) => setUser({ ...user, userData: data }),
-  });
+const App = () => {
   /*
-  1: initialise userContext
-  2: load saved data if exists
-      - Initialise axios
-  3: if (!data) route to welcome.js
-  4: if (data) route to home.js
+    Initialise axios
   */
 
   //axios.defaults.baseURL = "https://api.example.com";
@@ -29,6 +21,6 @@ function App() {
       </UserManager>
     </PaperProvider>
   );
-}
+};
 
 export default App;

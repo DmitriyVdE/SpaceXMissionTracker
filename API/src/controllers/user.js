@@ -30,6 +30,7 @@ async function register(req, res) {
         debug(err);
         result.status = 500;
         result.error = err;
+        result.message = "Please check your input again.";
       }
       res.status(result.status).send(result);
     });

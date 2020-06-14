@@ -10,7 +10,7 @@ const checkLoggedIn = ({ navigation }) => {
   const fillUserData = (err, res) => {
     if (!err) {
       const values = JSON.parse(res);
-      if (values) {
+      if (values && values.lastLogin != null && values.loggedIn != null) {
         setUser(values);
       } else {
         setUser({ lastLogin: false, loggedIn: false });
@@ -24,7 +24,7 @@ const checkLoggedIn = ({ navigation }) => {
     if (user.lastLogin === null && user.loggedIn === null) {
       ADMan.getLocalStorage("UserData", fillUserData);
     }
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     if (user.loggedIn !== null) {

@@ -1,13 +1,17 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, View, AsyncStorage, BackHandler } from "react-native";
-import { Colors, TextInput, Button } from "react-native-paper";
+import React, { useEffect, useState, useRef } from "react";
+import { StyleSheet, View, BackHandler } from "react-native";
+import { Colors, TextInput, Button, Text } from "react-native-paper";
 import Header from "../components/header";
 import appConfig from "../config";
 import ADMan from "../utilities/AsyncDataManager";
+import { useUserContext } from "../services/UserContext";
 
-function Login({ navigation }) {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+const Login = ({ navigation }) => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const passwordInput = useRef();
+  const { user, setUser } = useUserContext();
+  const [loginError, setLoginError] = useState("");
 
   useEffect(() => {
     const backHandler = BackHandler.addEventListener(
@@ -20,8 +24,8 @@ function Login({ navigation }) {
     return () => backHandler.remove();
   }, []);
 
-  function login(username, password) {
-    console.log(username, password);
+  const login = (username, password) => {
+    setLoginError("");
     if (username && password) {
       try {
         fetch(appConfig.baseAPIUrl + "login", {
@@ -44,13 +48,10 @@ function Login({ navigation }) {
                 loggedIn: true,
                 lastLogin: Date.now(),
               };
-              const saved = ADMan.setLocalStorage("UserData", JSON.stringify(userData));
-              if (saved) {
-                navigation.navigate("Home");
-              } else {
-                console.log("Can't save userdata");
-              }
+              setUser(userData);
+              ADMan.setLocalStorage("UserData", userData, finishLogin);
             } else {
+              setLoginError("Invalid username or password");
               console.log(json);
             }
           })
@@ -60,36 +61,38 @@ function Login({ navigation }) {
       } catch (error) {
         console.log(error);
       }
+    } else if (!username) {
+      setLoginError('Please fill in a username');
+    } else if (!password) {
+      setLoginError('Please fill in a password');
     }
-  }
+  };
 
-  async function setLocalStorage(key, value) {
-    try {
-      await AsyncStorage.setItem(key, value);
-    } catch (error) {
-      console.log(error);
+  const finishLogin = (err) => {
+    if (err) {
+      console.log(err);
+      setLoginError("Can't save userdata");
     }
-  }
+  };
 
   return (
     <>
-      <Header
-        navigation={navigation}
-        iconName="chevron-left"
-        text="Back"
-      />
+      <Header navigation={navigation} iconName="chevron-left" text="Back" />
       <View style={styles.container}>
         <View style={styles.content}>
           <TextInput
-            name="username"
             mode="outlined"
             style={styles.textInput}
             placeholder="Username"
             autoCapitalize="none"
             onChangeText={(text) => setUsername(text)}
+            returnKeyType="next"
+            onSubmitEditing={() => {
+              passwordInput.current.focus();
+            }}
           />
           <TextInput
-            name="password"
+            ref={passwordInput}
             mode="outlined"
             style={styles.textInput}
             placeholder="Password"
@@ -106,11 +109,12 @@ function Login({ navigation }) {
           >
             Log in
           </Button>
+          <Text style={styles.error}>{loginError ? loginError : null}</Text>
         </View>
       </View>
     </>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -136,6 +140,10 @@ const styles = StyleSheet.create({
   button: {
     marginTop: 25,
     width: "90%",
+  },
+  error: {
+    margin: 20,
+    color: Colors.redA700,
   },
 });
 

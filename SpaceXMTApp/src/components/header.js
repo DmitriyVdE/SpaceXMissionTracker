@@ -2,7 +2,7 @@ import * as React from "react";
 import { StyleSheet } from "react-native";
 import { Appbar, Button, Colors } from "react-native-paper";
 
-function Header({ navigation, iconName, text }) {
+const Header = ({ navigation, iconName, text }) => {
   let headerButton = "";
   if (iconName) {
     headerButton = (

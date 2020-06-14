@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { StyleSheet, View, BackHandler } from "react-native";
 import { Text, Button, Colors } from "react-native-paper";
 
-function Welcome({ navigation }) {
+const Welcome = ({ navigation }) => {
   useEffect(() => {
     const backHandler = BackHandler.addEventListener(
       "hardwareBackPress",
