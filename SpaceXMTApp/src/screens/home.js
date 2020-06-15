@@ -1,12 +1,16 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, View, ScrollView, BackHandler } from "react-native";
 import { Text, Button, Colors } from "react-native-paper";
 import { useUserContext } from "../services/UserContext";
+import { useAppDataContext } from "../services/AppDataContext";
+import ADMan from "../utilities/AsyncDataManager";
 import LogoutButton from "../components/LogoutButton";
 import CardButton from "../components/CardButton";
+import NextLaunchCardButton from "../components/NextLaunchCardButton";
 
 const Home = ({ navigation }) => {
-  const { user, setUser } = useUserContext();
+  const { user } = useUserContext();
+  const { appData, setApp } = useAppDataContext();
 
   useEffect(() => {
     const backHandler = BackHandler.addEventListener(
@@ -19,46 +23,85 @@ const Home = ({ navigation }) => {
     return () => backHandler.remove();
   }, []);
 
+  useEffect(() => {
+    const loadNextLaunch = (notifications) => {
+      try {
+        fetch("https://api.spacexdata.com/v3/launches/next", {
+          method: "GET",
+        })
+          .then((response) => response.json())
+          .then((json) => {
+            setApp({
+              nextLaunch: json,
+              notifications: notifications
+                ? notifications
+                : appData.notifications,
+            });
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    const loadSavedNotifications = (err, res) => {
+      if (!err) {
+        //loadNextLaunch();
+        loadNextLaunch(JSON.parse(res));
+      } else {
+        loadNextLaunch();
+        console.log(err);
+      }
+    };
+
+    ADMan.getLocalStorage("notifications", loadSavedNotifications);
+  }, []);
+
   return (
     <>
       <View style={styles.container}>
+        <Text style={styles.userwelcome}>
+          Hi {user.userInfo.username}, welcome!
+        </Text>
         <ScrollView contentContainerStyle={styles.content}>
-          <CardButton
-          // Maybe make this a special card with a timer or add it as an optional parameter
+          <NextLaunchCardButton
+            // Maybe make this a special card with a timer or add it as an optional parameter
             navigation={navigation}
             targetScreen={"NextLaunch"}
             cardTitle={"Next Launch"}
             backgroundImage={require("../assets/images/next_launch.jpg")}
           />
-          <CardButton
+          {/* <CardButton
             navigation={navigation}
             targetScreen={"Launches"}
             cardTitle={"Launches"}
             backgroundImage={require("../assets/images/next_launch.jpg")}
-          />
-          <CardButton
+          /> */}
+          {/* <CardButton
             navigation={navigation}
             targetScreen={"Missions"}
             cardTitle={"Missions"}
             backgroundImage={require("../assets/images/next_launch.jpg")}
-          />
-          <CardButton
+          /> */}
+          {/* <CardButton
             navigation={navigation}
             targetScreen={"Ships"}
             cardTitle={"Ships"}
             backgroundImage={require("../assets/images/next_launch.jpg")}
-          />
+          /> */}
           <CardButton
             navigation={navigation}
             targetScreen={"InfoAndHistory"}
             cardTitle={"Info & History"}
-            backgroundImage={require("../assets/images/next_launch.jpg")}
+            backgroundImage={require("../assets/images/info_and_history.jpg")}
           />
           <CardButton
             navigation={navigation}
             targetScreen={"FAQ"}
             cardTitle={"FAQ"}
-            backgroundImage={require("../assets/images/next_launch.jpg")}
+            backgroundImage={require("../assets/images/faq.jpg")}
           />
           <LogoutButton navigation={navigation} />
         </ScrollView>
@@ -75,6 +118,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     justifyContent: "flex-start",
     alignItems: "stretch",
+  },
+  userwelcome: {
+    fontSize: 20,
+    lineHeight: 40,
+    fontWeight: "bold",
   },
   content: {
     paddingBottom: 10,

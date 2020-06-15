@@ -27,13 +27,10 @@ const Header = ({ navigation, iconName, text }) => {
 
 const styles = StyleSheet.create({
   headerContainer: {
-    backgroundColor: "#FFFFFF",
+    flexDirection: "row",
+    flexWrap: "nowrap",
+    backgroundColor: "#FFF",
     right: 0,
-  },
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
   },
   title: {
     color: "#2E7166",

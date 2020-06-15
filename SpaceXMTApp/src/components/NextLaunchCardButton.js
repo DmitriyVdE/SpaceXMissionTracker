@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
   TouchableOpacity,
   ImageBackground,
 } from "react-native";
-import { Text, Colors } from "react-native-paper";
+import { Colors } from "react-native-paper";
+import { Text } from "react-native-paper";
+import CountdownForCard from "../components/CountdownForCard";
 
-const CardButton = ({
+const NextLaunchCardButton = ({
   navigation,
   targetScreen,
   cardTitle,
@@ -27,6 +29,7 @@ const CardButton = ({
         />
         <View style={styles.content}>
           <Text style={styles.title}>{cardTitle}</Text>
+          <CountdownForCard />
         </View>
       </TouchableOpacity>
     </>
@@ -46,6 +49,9 @@ const styles = StyleSheet.create({
   },
   content: {
     padding: 15,
+    flex: 1,
+    flexDirection: "column",
+    flexWrap: "wrap",
   },
   imageBackground: {
     flex: 1,
@@ -56,6 +62,7 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   title: {
+    width: "100%",
     color: Colors.white,
     lineHeight: 30,
     fontSize: 30,
@@ -63,4 +70,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CardButton;
+export default NextLaunchCardButton;

@@ -18,7 +18,7 @@ const checkLoggedIn = ({ navigation }) => {
     } else {
       console.log(err);
     }
-  }
+  };
 
   useEffect(() => {
     if (user.lastLogin === null && user.loggedIn === null) {

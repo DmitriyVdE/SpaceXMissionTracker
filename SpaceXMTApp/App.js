@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Provider as PaperProvider } from "react-native-paper";
 import UserManager from "./src/services/UserContext";
+import AppDataManager from "./src/services/AppDataContext";
 import AppNavigator from "./src/navigation";
 import axios from "react-native-axios";
 
@@ -17,7 +18,9 @@ const App = () => {
   return (
     <PaperProvider>
       <UserManager>
-        <AppNavigator />
+        <AppDataManager>
+          <AppNavigator />
+        </AppDataManager>
       </UserManager>
     </PaperProvider>
   );
