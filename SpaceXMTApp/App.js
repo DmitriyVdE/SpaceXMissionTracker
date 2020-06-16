@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Provider as PaperProvider } from "react-native-paper";
 import UserManager from "./src/services/UserContext";
 import AppDataManager from "./src/services/AppDataContext";

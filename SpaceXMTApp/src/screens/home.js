@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, View, ScrollView, BackHandler } from "react-native";
-import { Text, Button, Colors } from "react-native-paper";
+import { Text } from "react-native-paper";
 import { useUserContext } from "../services/UserContext";
 import { useAppDataContext } from "../services/AppDataContext";
 import ADMan from "../utilities/AsyncDataManager";

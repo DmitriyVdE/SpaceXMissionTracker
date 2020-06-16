@@ -33,6 +33,7 @@ const CountdownForCard = () => {
 
   return (
     <View style={styles.container}>
+      {/* Modify to only show bottom rows if top rows are 00 */}
       <Text style={styles.timer}>{days ? days + " day" + (days > 1 || days < 1 ? "s" : "") : " "}</Text>
       <Text style={styles.timer}>{hours ? hours + " hour" + (hours > 1 || hours < 1 ? "s" : "") : " "}</Text>
       <Text style={styles.timer}>{minutes ? minutes + " minute" + (minutes > 1 || minutes < 1 ? "s" : "") : " "}</Text>

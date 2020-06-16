@@ -9,13 +9,7 @@ import routes from "./routes/routes";
 dotenv.config();
 
 mongoose.connect(
-  "mongodb+srv://" +
-    process.env.DB_USER +
-    ":" +
-    process.env.DB_PASS +
-    "@" +
-    process.env.DB_URL +
-    "?retryWrites=true&w=majority",
+  "mongodb+srv://dbAPI:tQUkwdKHNOwKQy4Y@main-kzg1x.gcp.mongodb.net/sxmtdevdb?retryWrites=true&w=majority",
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -37,17 +31,10 @@ app.use(bodyParser.json());
 
 app.use("/api/v1/", routes);
 
-const listen = app.listen(config.get("port"), () => {
-  debug(
-    `server is running on port ${config.get("port")} and in ${config.get(
-      "name"
-    )} mode`
-  );
-  console.log(
-    `server is running on port ${config.get("port")} and in ${config.get(
-      "name"
-    )} mode`
-  );
+const PORT = process.env.PORT || 8080;
+
+const listen = app.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}...`);
 });
 
 export default app;

@@ -1,12 +1,9 @@
 import React, { useEffect } from "react";
 import { StyleSheet, View, BackHandler } from "react-native";
-import { Text, Button, Colors } from "react-native-paper";
-import { useUserContext } from "../services/UserContext";
+import { Text } from "react-native-paper";
 import Header from "../components/Header";
 
 const NextLaunch = ({ navigation }) => {
-  const { user, setUser } = useUserContext();
-
   useEffect(() => {
     const backHandler = BackHandler.addEventListener(
       "hardwareBackPress",
@@ -24,6 +21,7 @@ const NextLaunch = ({ navigation }) => {
       <View style={styles.container}>
         <View style={styles.content}>
           <Text style={styles.mainText}>Info & History</Text>
+          <Text style={styles.mainText}>Nothing to see here yet.</Text>
         </View>
       </View>
     </>

@@ -11,6 +11,7 @@ import Missions from "../screens/Missions";
 import Ships from "../screens/Ships";
 import InfoAndHistory from "../screens/InfoAndHistory";
 import FAQ from "../screens/FAQ";
+import AddFAQ from "../screens/AddFAQ";
 
 const StackNavigator = createStackNavigator(
   {
@@ -46,6 +47,9 @@ const StackNavigator = createStackNavigator(
     },
     FAQ: {
       screen: FAQ,
+    },
+    AddFAQ: {
+      screen: AddFAQ,
     },
   },
   {

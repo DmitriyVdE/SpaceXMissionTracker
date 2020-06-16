@@ -46,14 +46,18 @@ const NextLaunch = ({ navigation }) => {
 
   const setNextLaunchNotification = (res) => {
     if (res) {
-      console.log(res);
-      sendNotificationImmediately(
+      scheduleNotification(
+        "Rocket launching very soon!",
+        "Tune in to SpaceX live on YouTube to see the next launch.",
+        new Date().getTime() + 100000,
+        saveNotificationId
+      )
+      /* sendNotificationImmediately(
         "Test",
         "Something to fill the body with",
         //launchDateTime,
         saveNotificationId
-      );
-      //console.log(res);
+      ); */
     } else {
       console.log(res);
       // Add toast to notify user to enable notifications
@@ -141,7 +145,10 @@ const NextLaunch = ({ navigation }) => {
             style={styles.button}
             mode="outlined"
             onPress={() => {
-              sendNotificationImmediately("Instant notification", "You just triggered this instant notification, cool huh?");
+              sendNotificationImmediately(
+                "Instant notification",
+                "You just triggered this instant notification, cool huh?"
+              );
             }}
           >
             DEMO INSTANT
@@ -150,7 +157,11 @@ const NextLaunch = ({ navigation }) => {
             style={styles.button}
             mode="outlined"
             onPress={() => {
-              scheduleNotification("Delayed notification", "You triggered this notification exactly 6 seconds ago.", new Date().getTime() + 6000);
+              scheduleNotification(
+                "Delayed notification",
+                "You triggered this notification exactly 6 seconds ago.",
+                new Date().getTime() + 6000
+              );
             }}
           >
             DEMO 6 SECONDS
@@ -208,10 +219,6 @@ const styles = StyleSheet.create({
   content: {
     paddingTop: 10,
     paddingBottom: 20,
-  },
-  mainText: {
-    flex: 1,
-    fontSize: 20,
   },
   button: {
     marginVertical: 10,

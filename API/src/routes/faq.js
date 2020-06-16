@@ -32,4 +32,8 @@ faqRouter
   .route("/faq/feedback/:id")
   .post(jwtController.validateToken, faqController.feedbackFaq)
 
+faqRouter
+  .route("/faq/moderate")
+  .get(jwtController.validateToken, faqController.getFaqToModerate)
+
 export default faqRouter;

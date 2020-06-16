@@ -232,7 +232,7 @@ async function helpfullFaq(req, res) {
               result.error = err;
             }
             res.status(result.status).send(result);
-          })
+          });
         } else {
           debug(err);
           result.status = 404;
@@ -287,6 +287,54 @@ async function feedbackFaq(req, res) {
   }
 }
 
+async function getFaqToModerate(req, res) {
+  let result = {};
+
+  try {
+    const payload = req.decoded;
+
+    if (payload) {
+      if (payload.role === "admin" || payload.role === "moderator") {
+        Faq.find(
+          {
+            $and: [
+              {
+                qApproved: false,
+                aApproved: false,
+                answered: false,
+              },
+            ],
+          },
+          (err, found) => {
+            if (!err) {
+              result.status = 200;
+              result.result = found;
+            } else {
+              debug(err);
+              result.status = 404;
+              result.error = err;
+            }
+            res.status(result.status).send(result);
+          }
+        );
+      } else {
+        result.status = 403;
+        result.error = "Access denied";
+        res.status(result.status).send(result);
+      }
+    } else {
+      result.status = 401;
+      result.error = "Authentication error";
+      res.status(result.status).send(result);
+    }
+  } catch (err) {
+    debug(err);
+    result.status = 500;
+    result.error = err;
+    res.status(result.status).send(result);
+  }
+}
+
 export default {
   searchFaq,
   getFaq,
@@ -295,4 +343,5 @@ export default {
   deleteFaq,
   helpfullFaq,
   feedbackFaq,
+  getFaqToModerate,
 };
