@@ -62,7 +62,7 @@ const Home = ({ navigation }) => {
   return (
     <>
       <View style={styles.container}>
-        <Text style={styles.userwelcome}>
+        <Text style={styles.userWelcome}>
           Hi {user.userInfo.username}, welcome!
         </Text>
         <ScrollView contentContainerStyle={styles.content}>
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "stretch",
   },
-  userwelcome: {
+  userWelcome: {
     fontSize: 20,
     lineHeight: 40,
     fontWeight: "bold",

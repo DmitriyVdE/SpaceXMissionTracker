@@ -1,1 +1,1 @@
-module.exports.baseAPIUrl = "https://spacexmt.ew.r.appspot.com/api/v1/";
+export const baseAPIUrl = "https://spacexmt.ew.r.appspot.com/api/v1/";
