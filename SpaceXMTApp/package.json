@@ -14,7 +14,7 @@
     "expo": "^42.0.4",
     "expo-permissions": "~12.1.1",
     "install": "^0.13.0",
-    "moment": "^2.29.1",
+    "moment": "^2.29.2",
     "native-base": "^3.2.1",
     "npm": "^8.1.0",
     "react": "17.0.2",
